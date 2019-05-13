@@ -6,6 +6,8 @@
 # NOTE: this example requires PyAudio because it uses the Microphone class
 
 import speech_recognition as sr
+from fbchat import Client
+from fbchat.models import *
 
 # obtain audio from the microphone
 def audio_rec():
@@ -25,13 +27,15 @@ def audio_rec():
         print("Sphinx error; {0}".format(e))
 
 def main():
+    client = Client('no', 'no')
     while True:
         out_str = audio_rec()
         check_1 = False
         for word in out_str.split():
             if check_1:
                 if word == 'times' or word == 'time':
-                    print("Send FB message here")
+                    client.send(Message(text='shot'), thread_id=client.uid, thread_type=ThreadType.USER)
+                    print("Success")
                 else:
                     check_1 = False
             if word == 'good':
